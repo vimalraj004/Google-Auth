@@ -39,6 +39,21 @@ align-items: center;
 
 
 }
-.mui-16wblaj-MuiInputBase-input-MuiOutlinedInput-input{
-  color: white;
-}
+.heading{ 
+  padding-bottom: 10px;
+  cursor:pointer;
+  
+ }
+ .heading:hover,.closebtn:hover{
+  color: red;
+ }
+ .regclosebtn{
+  position:relative; 
+  bottom:60px; 
+  left:120px;
+  cursor:pointer}
+  .loginclosebtn{
+    position:relative; 
+    bottom:80px; 
+    left:120px;
+    cursor:pointer}

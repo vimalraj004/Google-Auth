@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
-import style from "./page.module.css";
+import React, { useState, useEffect } from "react";
+import style from "../page.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
@@ -11,9 +11,18 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const Loginform = () => {
-  const [showPassword, setShowPassword] = useState(false);
+interface loginformprops{
+  handleCloseBtn(form:string):void
+}
 
+const Loginform = ({handleCloseBtn}:loginformprops) => {
+  const [showPassword, setShowPassword] = useState(false);
+  let initalstateforuser ={
+    email:"",
+    password:"",
+  }
+  const [userData,setUserData]= useState(initalstateforuser)
+  console.log(userData)
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -28,11 +37,14 @@ const Loginform = () => {
   };
   return (
     <div className={style.loginform}>
+    <h3 className={style.loginclosebtn} onClick={()=>handleCloseBtn("login")}>X</h3>
       <TextField
         label="Enter Your Mail"
         variant="outlined"
         placeholder="Enter Your Mail"
         type="email"
+        value={userData.email}
+        onChange={(e)=>setUserData({...userData,email:e.target.value})}
         sx={{
           input: {
             color: "white", // input text color
@@ -90,6 +102,8 @@ const Loginform = () => {
         <OutlinedInput
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
+          value={userData.password}
+          onChange={(e)=>setUserData({...userData,password:e.target.value})}
           endAdornment={
             <InputAdornment position="end">
               <IconButton

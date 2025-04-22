@@ -1,41 +1,44 @@
 "use client";
 import { useState, useEffect } from "react";
 import style from "./page.module.css";
-import Loginform from "./Loginform";
-import Registerform from "./Registerform";
+import Loginform from "./Loginfolder/Loginform";
+import Registerform from "./Registerfolder/Registerform";
 const page = () => {
-  let initialstate ={
+  let initialstateforforms ={
     showregform :false,
     showloginform:false
   }
-  const [showForms,setShowForms]= useState(initialstate)
-  const mouseHoverOnContainer = (container:string )=>{
-    if(container === "reg"){
-      setShowForms({showregform : true, showloginform : false})  
-    
+  const [showForms,setShowForms]= useState(initialstateforforms)
+  const openForm = (formname:string)=>{
+    if(formname === "register"){
+      setShowForms({...showForms,showregform:true})
     }
     else{
-      setShowForms({showregform : false, showloginform : true})  
-
+      setShowForms({...showForms,showloginform:true})
     }
   }
-  const mouseLeaveOnContainer =()=>{
-    setShowForms({showregform : false, showloginform : false})  
+  const handleCloseBtn =(form:string):void=>{
+    if(form === "reg"){
+      setShowForms((prev)=>({...prev,showregform:false}))
+    }else{
+      setShowForms((prev)=>({...prev,showloginform:false}))
+    }
   }
+
   return (
     <div className={style.body}>
       <div className={style.container}>
-        <div className={style.regcontainer} onMouseOver={()=>mouseHoverOnContainer("reg")} onMouseLeave={mouseLeaveOnContainer}>
-          <h2 style={{ paddingBottom: "10px" }}>REGISTER</h2>
+        <div className={style.regcontainer} >
+          <h2 className={style.heading} onClick={()=>openForm("register")}>REGISTER</h2>
           {showForms.showregform && 
-             <Registerform/>  
+             <Registerform  handleCloseBtn={handleCloseBtn}/>  
           }
             
         </div>
-        <div className={style.logincontainer} onMouseOver ={()=>mouseHoverOnContainer("login")} onMouseLeave={mouseLeaveOnContainer}>
-          <h2 style={{ paddingBottom: "10px" }}>LOGIN</h2>
+        <div className={style.logincontainer}>
+          <h2 className={style.heading} onClick={()=>openForm("login")}>LOGIN</h2>
           {showForms.showloginform && 
-              <Loginform/>
+              <Loginform   handleCloseBtn={handleCloseBtn} />
           }
         
         </div>
