@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import {registerAndLoginService} from "../commonService/page"
 import style from "../page.module.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -25,7 +26,7 @@ const Registerform = ({handleCloseBtn}:Registerformprops) => {
     password:"",
   }
   const [userData,setUserData]= useState(initalstateforuser)
-  console.log(userData)
+  // console.log(userData)
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -38,6 +39,21 @@ const Registerform = ({handleCloseBtn}:Registerformprops) => {
   ) => {
     event.preventDefault();
   };
+  const signup = async()=>{
+    console.log("entered")
+    try{
+      let body ={
+        userData
+      }
+      console.log(body)
+  const response = await registerAndLoginService("/api/register/signup","post",body)
+  console.log(response)
+
+    }
+    catch(error){
+        console.log(error)
+    }
+}
 
   return (
   
@@ -108,7 +124,7 @@ const Registerform = ({handleCloseBtn}:Registerformprops) => {
       <FormControl
         sx={{
           m: 1,
-          width: "25ch",
+          width: "27ch",
           input: {
             color: "white",
           },
@@ -169,6 +185,7 @@ const Registerform = ({handleCloseBtn}:Registerformprops) => {
       <Button
         variant="outlined"
         sx={{ color: "white", border: " 1px solid white" }}
+        onClick={signup}
       >
         Signup
       </Button>

@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import style from "./page.module.css";
-import Loginform from "./Loginfolder/Loginform";
-import Registerform from "./Registerfolder/Registerform";
+import Loginform from "./Login/page";
+import Registerform from "./Register/page";
 const page = () => {
   let initialstateforforms ={
     showregform :false,

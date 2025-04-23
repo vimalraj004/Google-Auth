@@ -1,11 +1,11 @@
 import axios from "axios"
-import config from "../frontend.env/page"
+import {baseUrl} from "../config/page"
 
-const registerAndLoginService = async(url:string,type:string,body:object)=>{
+export const registerAndLoginService = async(endpoint:string,type:string,body:object)=>{
 try{
     const response = await axios({
-        baseURL:config.baseUrl,
-        url:url,
+        baseURL:baseUrl,
+        url:endpoint,
         method:type,
         data:body,
         headers:{
@@ -19,6 +19,6 @@ try{
 }
 catch(error){
     console.log(error)
+    throw new Error ("Internal server error"+error)
 }
 }
-export default {registerAndLoginService}
