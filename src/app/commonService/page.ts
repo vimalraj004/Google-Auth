@@ -1,5 +1,5 @@
 import axios from "axios"
-import {baseUrl} from "../config/page"
+import {baseUrl} from "../config/baseurlconfig/page"
 
 export const registerAndLoginService = async(endpoint:string,type:string,body:object)=>{
 try{

@@ -19,6 +19,7 @@
     "@mui/styled-engine-sc": "^7.0.2",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "next": "15.3.1",
