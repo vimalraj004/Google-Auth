@@ -1,0 +1,19 @@
+.navcontainer {
+    height: 10vh;
+    width: 100vw;
+    position: relative; /* better than absolute for navbar */
+    box-shadow: 2px 2px 5px 3px white;
+    display: flex;
+    justify-content: space-between; /* move items to sides */
+    align-items: center;
+    padding: 0 20px; /* small space left and right */
+  }
+  
+  /* Extra: center text perfectly */
+  .centerText {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+  }

@@ -10,19 +10,34 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-interface loginformprops{
-  handleCloseBtn(form:string):void
+import { encryptdata } from "../../helpers/page";
+import { registerAndLoginService } from "../../helpers/page";
+import toast, { Toaster } from "react-hot-toast";
+import { z } from "zod";
+import { ScaleLoader } from "react-spinners";
+import { useRouter } from "next/navigation";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { FaGoogle } from "react-icons/fa";
+interface loginformprops {
+  handleCloseBtn(form: string): void;
+}
+interface googleuserdata {
+  displayName: string | null;
+  email: string | null;
+  uid: string | null;
+  photoURL: string | null;
 }
 
-const Loginform = ({handleCloseBtn}:loginformprops) => {
+const Loginform = ({ handleCloseBtn }: loginformprops) => {
+  const provider = new GoogleAuthProvider();
   const [showPassword, setShowPassword] = useState(false);
-  let initalstateforuser ={
-    email:"",
-    password:"",
-  }
-  const [userData,setUserData]= useState(initalstateforuser)
-  console.log(userData)
+  const [loader, setLoader] = useState(false);
+  const navigate = useRouter();
+  let initalstateforuser = {
+    email: "",
+    password: "",
+  };
+  const [userData, setUserData] = useState(initalstateforuser);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -35,16 +50,136 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
   ) => {
     event.preventDefault();
   };
+  const login = async () => {
+    setLoader(true);
+    if (!userData.email || !userData.password) {
+      toast.error("Fill all the Fields");
+      setLoader(false);
+      return;
+    }
+    try {
+      const uservalidation = z.object({
+        email: z.string().email({ message: "Invalid email address" }),
+        password: z
+          .string()
+          .min(6, { message: "password length should be at least 6 char long" })
+          .regex(/[a-z]/, {
+            message: "Password should contain at least one lower case",
+          })
+          .regex(/[A-Z]/, {
+            message: "Password should contain at least one upper case",
+          })
+          .regex(/[0-9]/, {
+            message: "Password should contain at least one Number",
+          })
+          .regex(/[^a-zA-Z0-9]/, {
+            message: "Password should contain at least one special char",
+          }),
+      });
+      const result = await uservalidation.safeParse({ ...userData });
+      if (!result.success) {
+        result.error.issues.forEach((x) => {
+          toast.error(x.message);
+        });
+        setLoader(false);
+      } else {
+        let body = {
+          ...userData,
+          password: encryptdata(userData.password),
+        };
+        const response = await registerAndLoginService(
+          "/api/user/login",
+          "post",
+          body
+        );
+        if (response.status === 200) {
+          toast.success("Loggedin successfully");
+          setUserData(initalstateforuser);
+          setLoader(false);
+          setTimeout(() => {
+            handleCloseBtn("login");
+            navigate.push("/home");
+          }, 800);
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status === 500) {
+        toast.error("Internal Server Error");
+        setLoader(false);
+      } else {
+        toast.error(error.response.message);
+        setLoader(false);
+      }
+    }
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter") {
+      login();
+    }
+  };
+  const sendData = async (user: googleuserdata) => {
+    try {
+      let body = {
+        email: user.email,
+        googleid: user.uid,
+      };
+      const response = await registerAndLoginService(
+        "/api/user/googlelogin",
+        "post",
+        body
+      );
+      console.log(response);
+      if (response.status === 200) {
+        toast.success("Loggedin Successfully");
+        setLoader(false);
+
+        setTimeout(() => {
+          handleCloseBtn("login");
+          navigate.push("/home");
+        }, 800);
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status === 500) {
+        toast.error("Internal Server Error");
+        setLoader(false);
+      } else {
+        toast.error(error.response.data.message);
+        setLoader(false);
+      }
+    }
+  };
+  const singInWithGoogle = () => {
+    try {
+      setLoader(true);
+      const auth = getAuth();
+      signInWithPopup(auth, provider).then((result) => {
+        const user = result.user;
+        console.log(user);
+        sendData(user);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={style.loginform}>
-    <h3 className={style.loginclosebtn} onClick={()=>handleCloseBtn("login")}>X</h3>
+      <h3
+        className={style.loginclosebtn}
+        onClick={() => handleCloseBtn("login")}
+      >
+        X
+      </h3>
       <TextField
         label="Enter Your Mail"
         variant="outlined"
         placeholder="Enter Your Mail"
         type="email"
         value={userData.email}
-        onChange={(e)=>setUserData({...userData,email:e.target.value})}
+        onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+        onKeyDown={handleKeyDown}
         sx={{
           input: {
             color: "white", // input text color
@@ -72,7 +207,7 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
       <FormControl
         sx={{
           m: 1,
-          width: "25ch",
+          width: "20ch",
           input: {
             color: "white",
           },
@@ -95,6 +230,7 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
           },
         }}
         variant="outlined"
+        onKeyDown={handleKeyDown}
       >
         <InputLabel htmlFor="outlined-adornment-password">
           Enter Password
@@ -103,7 +239,9 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
           id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
           value={userData.password}
-          onChange={(e)=>setUserData({...userData,password:e.target.value})}
+          onChange={(e) =>
+            setUserData({ ...userData, password: e.target.value })
+          }
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -115,7 +253,11 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
                 onMouseUp={handleMouseUpPassword}
                 edge="end"
               >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
+                {showPassword ? (
+                  <VisibilityOff sx={{ color: "white" }} />
+                ) : (
+                  <Visibility sx={{ color: "white" }} />
+                )}
               </IconButton>
             </InputAdornment>
           }
@@ -125,16 +267,35 @@ const Loginform = ({handleCloseBtn}:loginformprops) => {
       </FormControl>
       <Button
         variant="outlined"
-        sx={{ color: "white", border: " 1px solid white", width: "74%" }}
+        sx={{
+          color: "#555",
+          border: "1px solid #ccc",
+          width: "74%",
+          backgroundColor: "#fff",
+          textTransform: "none",
+          fontWeight: 500,
+          "&:hover": {
+            backgroundColor: "#f5f5f5",
+            borderColor: "#aaa",
+          },
+        }}
+        startIcon={<FaGoogle style={{ color: "#DB4437" }} />}
+        onClick={singInWithGoogle} // fixed typo: "singInWithGoogle"
       >
-        Login With Google
+        Login with Google
       </Button>
-      <Button
-        variant="outlined"
-        sx={{ color: "white", border: " 1px solid white" }}
-      >
-        Login
-      </Button>
+      {loader ? (
+        <ScaleLoader color="white" />
+      ) : (
+        <Button
+          variant="outlined"
+          sx={{ color: "white", border: " 1px solid white" }}
+          onClick={login}
+        >
+          Login
+        </Button>
+      )}
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
     </div>
   );
 };

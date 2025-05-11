@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import style from "./page.module.css";
 import Loginform from "./Login/page";
 import Registerform from "./Register/page";
+import { initializeMyFireBase } from "@/firebase/firebase";
 const page = () => {
   let initialstateforforms ={
     showregform :false,
@@ -24,6 +25,10 @@ const page = () => {
       setShowForms((prev)=>({...prev,showloginform:false}))
     }
   }
+  useEffect(()=>{
+    initializeMyFireBase()
+
+  },[])
 
   return (
     <div className={style.body}>

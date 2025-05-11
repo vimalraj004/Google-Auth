@@ -36,6 +36,7 @@ align-items: center;
   align-items: center;
   justify-content: center;
   gap: 15px;
+  position: relative;
 
 
 }
@@ -48,12 +49,19 @@ align-items: center;
   color: red;
  }
  .regclosebtn{
-  position:relative; 
+  /* position:relative;  */
   bottom:60px; 
-  left:120px;
-  cursor:pointer}
+  /* left:120px; */
+  cursor:pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
   .loginclosebtn{
-    position:relative; 
+    /* position:relative;  */
     bottom:80px; 
-    left:120px;
-    cursor:pointer}
+    /* left:120px; */
+    cursor:pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;}
