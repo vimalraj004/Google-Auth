@@ -6,12 +6,10 @@ require("dotenv").config()
 import Cookie from "js-cookie"
 import toast from "react-hot-toast"
 import axios from "axios"
-import {baseUrl} from "../config/baseurlconfig"
 
 export const registerAndLoginService = async(endpoint:string,type:string,body:object)=>{
 try{
     const response = await axios({
-        baseURL:baseUrl,
         url:endpoint,
         method:type,
         data:body,
@@ -36,7 +34,7 @@ export const commonService =async (endpoint:string,type:string,body?:object):Pro
       
         const accessToken = Cookie.get("accessToken")
         const response = await axios({
-            baseURL:baseUrl,
+           
             url:endpoint,
             method:type,
             data:body,
