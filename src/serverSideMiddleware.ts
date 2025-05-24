@@ -23,7 +23,6 @@ export function withAuth(
           accessToken,
           process.env.TOKEN_SECRET!
         );
-        console.log(decoded, "decoded");
 
         return await handler(request);
         // return NextResponse.json({message:"Unauthorize no token"},{status:401})
@@ -34,7 +33,6 @@ export function withAuth(
           refreshToken,
           process.env.TOKEN_SECRET!
         ) as MyJwtPayload;
-        console.log(decoded, "decoded");
    
         if (decoded) {
           const { userName, userId, userEmail } = decoded;

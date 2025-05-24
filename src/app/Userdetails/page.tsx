@@ -108,6 +108,7 @@ const page = ({ setShowAllUser }: userdetailsprops) => {
             textAlign: "center",
             paddingTop: "10px",
             paddingLeft: "38%",
+            color:"black"
           }}
         >
           Registered Users
@@ -145,7 +146,7 @@ const page = ({ setShowAllUser }: userdetailsprops) => {
                           {editRowIndex === rowindex + 1 && (x2 === "name" || x2 === "email") ? (
                             <input
                               type="text"
-                              style={{border:"none",outline:"none",backgroundColor:"transparent"}}
+                              style={{border:"none",outline:"none",backgroundColor:"transparent", color:"black"}}
                               value={editRowData[colIndex]}
                               onChange={(e) =>
                                 handleInputChange(x2, e.target.value)

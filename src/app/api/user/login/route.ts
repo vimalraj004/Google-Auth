@@ -42,8 +42,8 @@ export async function POST (request:NextRequest){
         userName:checkemail.name,
         userEmail:checkemail.email
       }
-      const accessToken =  jwt.sign(payload,process.env.TOKEN_SECRET!,{expiresIn:"1m"})
-      const refreshToken = jwt.sign(payload, process.env.TOKEN_SECRET!, { expiresIn: "2m" })
+      const accessToken =  jwt.sign(payload,process.env.TOKEN_SECRET!,{expiresIn:"2m"})
+      const refreshToken = jwt.sign(payload, process.env.TOKEN_SECRET!, { expiresIn: "3m" })
  
         const response =  NextResponse.json({message:"Loggedin Successfully"},{status:200})
         response.cookies.set("accessToken",accessToken,{
@@ -51,20 +51,20 @@ export async function POST (request:NextRequest){
         secure:false,
         sameSite:"strict",
         path:"/",
-        maxAge:60})
+        maxAge:120})
         response.cookies.set("refreshToken",refreshToken,{
         httpOnly:true,
         secure:false,
         sameSite:"strict",
         path:"/",
-        maxAge:120})
+        maxAge:180})
 
         return response;
     }else{
         return NextResponse.json({message:"Incorrect password"},{status:401})
     }
   }else{
-    return NextResponse.json({message:"Incorrect email"},{status:401})
+    return NextResponse.json({message:"User not Exist"},{status:401})
   }
   }
 

@@ -126,7 +126,6 @@ const Registerform = ({ handleCloseBtn }: Registerformprops) => {
         "post",
         body
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Loggedin Successfully");
         setLoader(false);
@@ -154,7 +153,6 @@ const Registerform = ({ handleCloseBtn }: Registerformprops) => {
       signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        console.log(user);
         sendData(user);
       });
     } catch (error) {
@@ -240,7 +238,7 @@ const Registerform = ({ handleCloseBtn }: Registerformprops) => {
       <FormControl
         sx={{
           m: 1,
-          width: "20ch",
+          width: "25ch",
           input: {
             color: "white",
           },

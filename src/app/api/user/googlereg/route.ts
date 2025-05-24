@@ -8,7 +8,6 @@ export async function POST(request:NextRequest){
     try{
        const reqbody = await request.json()
        const{name,email,googleid,googleimg} = reqbody
-       console.log(reqbody,"reqbody")
        if(!name|| !email || !googleid || !googleimg){
         return NextResponse.json({message:"Required data is missing"},{status:400})
        }
@@ -17,7 +16,6 @@ export async function POST(request:NextRequest){
         return NextResponse.json({message:"User email is Already registered"},{status:409})
       }else{
         const result = await new User(reqbody).save()
-         console.log(result,"googleresutl")
          if(!result){
             return NextResponse.json({message:"Failed to Store the data"},{status:400})
          }else{

@@ -3,7 +3,7 @@
     width: 60vw;
     background-color: rgb(223, 223, 223);
     border-radius: 10px;
-    /* color: white; */
+       color: black;
     /* border: 5px solid red; */
  
 }
@@ -11,7 +11,7 @@
     height: 90%;
     width: 100%;
     /* border: 2px solid red; */
-   
+   color: black;
     padding-top: 8px;
     border-radius: 10px;
     overflow-x: auto;
@@ -23,11 +23,14 @@
     /* border: 2px solid red; */
     border-collapse: collapse;
     border: 2px solid black;
+    color: black;
+    width: 100%;
     
 }
 .table th,.table td {
     padding: 12px 16px;
     border: 2px solid #ccc;
+     color: black;
   }
   .heading{
     display: flex;

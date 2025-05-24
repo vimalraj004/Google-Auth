@@ -129,7 +129,6 @@ const Loginform = ({ handleCloseBtn }: loginformprops) => {
         "post",
         body
       );
-      console.log(response);
       if (response.status === 200) {
         toast.success("Loggedin Successfully");
         setLoader(false);
@@ -156,7 +155,6 @@ const Loginform = ({ handleCloseBtn }: loginformprops) => {
       const auth = getAuth();
       signInWithPopup(auth, provider).then((result) => {
         const user = result.user;
-        console.log(user);
         sendData(user);
       });
     } catch (error) {
@@ -207,7 +205,7 @@ const Loginform = ({ handleCloseBtn }: loginformprops) => {
       <FormControl
         sx={{
           m: 1,
-          width: "20ch",
+          width: "25ch",
           input: {
             color: "white",
           },

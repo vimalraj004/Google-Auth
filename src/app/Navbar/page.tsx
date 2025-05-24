@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { getAuth, signOut } from "firebase/auth";
 import Avatar from "@mui/material/Avatar";
+import { initializeMyFireBase } from "@/firebase/firebase";
 type navbarprops = {
   setShowAllUser: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -27,7 +28,6 @@ const page = ({ setShowAllUser }: navbarprops) => {
   };
   const navigate = useRouter();
   const [userData, setUserData] = useState<USERDATA>(initialuserData);
-  console.log(userData);
   const logout = async () => {
     try {
       const auth = getAuth();
@@ -43,6 +43,9 @@ const page = ({ setShowAllUser }: navbarprops) => {
       }
     } catch (error: any) {
       console.log(error);
+      if(!error.response){
+         initializeMyFireBase()
+      }
       if (error.response.status === 500) {
         toast.error("Internal Server Error");
       } else {
@@ -71,7 +74,7 @@ const page = ({ setShowAllUser }: navbarprops) => {
   }, []);
   return (
     <div className={style.navcontainer}>
-      <Avatar alt="Remy Sharp" src={userData?.userImg}/>
+      <Avatar alt="USER" src={userData?.userImg}/>
 
 
       <h1

@@ -20,7 +20,6 @@ try{
         }
 
     })
-    console.log(response,"checkit")
     return response
 
 }
@@ -95,7 +94,6 @@ export const getDataFromToken = async (request:NextRequest)=>{
 export const encryptdata = (data:string):string =>{
     try{
       const encryptdata =   CryptoJS.AES.encrypt(data,secretkey).toString()
-      console.log(encryptdata)
       return encryptdata
 
     }
@@ -109,7 +107,6 @@ export const decryptdata = async(data:string):Promise<string>=>{
 try{
  const byte = CryptoJS.AES.decrypt(data,secretkey)
  const decryptdata = byte.toString(CryptoJS.enc.Utf8)
- console.log(decryptdata)
  return decryptdata
 
 }
