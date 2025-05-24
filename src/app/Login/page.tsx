@@ -108,7 +108,7 @@ const Loginform = ({ handleCloseBtn }: loginformprops) => {
         toast.error("Internal Server Error");
         setLoader(false);
       } else {
-        toast.error(error.response.message);
+        toast.error(error?.response?.data?.message);
         setLoader(false);
       }
     }

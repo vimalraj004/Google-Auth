@@ -7,12 +7,10 @@ dbConnect()
  async function GETHandler(request:NextRequest){
     try{
     const result = await getDataFromToken(request)
-    console.log(result,"result")
     if(typeof result !== "string"){
         return NextResponse.json({message:"successfully fetched the data",data:result},{status:200})
     }
     else{
-        console.log("check this is working 2")
         return NextResponse.json({message:"UnAuthorized user"},{status:401})
     }
 

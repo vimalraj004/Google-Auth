@@ -26,6 +26,7 @@ try{
 }
 catch(error:any){
     console.log(error)
+    // toast.error(error?.response?.data?.message)
   throw error;
     
 }
@@ -104,7 +105,7 @@ export const encryptdata = (data:string):string =>{
     }
 }
 
-export const decryptdata = (data:string):string=>{
+export const decryptdata = async(data:string):Promise<string>=>{
 try{
  const byte = CryptoJS.AES.decrypt(data,secretkey)
  const decryptdata = byte.toString(CryptoJS.enc.Utf8)
